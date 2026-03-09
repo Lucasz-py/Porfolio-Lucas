@@ -31,4 +31,8 @@
   .hover-target {
     cursor: none;
   }
+
+  * {
+    cursor: none !important;
+  }
 }
