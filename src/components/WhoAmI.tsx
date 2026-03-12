@@ -5,7 +5,6 @@ import ProfileCard from './ProfileCard';
 import personImg from '../assets/person.webp';
 import grainImg from '../assets/grain.webp';
 
-// Lazy loading del SplashCursor
 const SplashCursor = React.lazy(() => import('./SplashCursor'));
 
 const WhoAmI: React.FC = () => {
@@ -58,7 +57,7 @@ const WhoAmI: React.FC = () => {
                 title="Lic. En Sistemas" handle="Lucasz" status="Available for work"
                 contactText="Contact" showUserInfo={true} enableTilt={true} enableMobileTilt={true}
                 mobileTiltSensitivity={5} behindGlowEnabled={true} behindGlowColor="rgba(125, 190, 255, 0.67)"
-                behindGlowSize="50%" onContactClick={() => { window.location.href = 'mailto:tu@email.com'; }}
+                behindGlowSize="50%" onContactClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               />
             </div>
           </motion.div>

@@ -10,8 +10,11 @@ export default function Header() {
     >
       <div className="w-full max-w-7xl flex justify-between items-start">
         
-        {/* BURBUJA IZQUIERDA: Logo (Cristal ahumado con destello Azul al pasar el mouse) */}
-        <div className="pointer-events-auto px-6 py-3 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] hover:bg-black/60 hover:border-blue-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 flex items-center justify-center cursor-pointer">
+        {/* BURBUJA IZQUIERDA: Logo */}
+        <div 
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="pointer-events-auto px-6 py-3 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] hover:bg-black/60 hover:border-blue-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 flex items-center justify-center cursor-pointer"
+        >
           <span className="font-black text-xl tracking-wider text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] hover-target">
             Lucasz.exe
           </span>
@@ -20,16 +23,33 @@ export default function Header() {
         {/* BURBUJA DERECHA: Navegación y Botón */}
         <div className="pointer-events-auto hidden md:flex items-center px-8 py-3 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.8)]">
           
-          {/* Links de navegación (Gris claro que ilumina a blanco brillante en hover) */}
+          {/* Links de navegación (Ahora con scroll suave) */}
           <div className="flex items-center gap-6 pr-6 font-mono font-bold text-xs uppercase text-gray-300">
-            <a href="#about" className="hover-target hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all">/ABOUT</a>
-            <a href="#skills" className="hover-target hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all">/SKILLS</a>
-            <a href="#logs" className="hover-target hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all">/LOGS</a>
-            <a href="#work" className="hover-target hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all">/WORK</a>
+            <button 
+              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} 
+              className="hover-target hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all"
+            >
+              /ABOUT
+            </button>
+            <button 
+              onClick={() => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })} 
+              className="hover-target hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all"
+            >
+              /SKILLS
+            </button>
+            <button 
+              onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })} 
+              className="hover-target hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all"
+            >
+              /WORK
+            </button>
           </div>
           
-          {/* Botón HIRE ME (Acento Naranja vibrante para contrastar con el fondo azul/morado) */}
-          <button className="hover-target bg-orange-600/30 border border-orange-500/50 px-5 py-2 rounded-full font-mono font-bold text-xs uppercase text-white shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:bg-orange-500/60 hover:shadow-[0_0_25px_rgba(249,115,22,0.6)] hover:border-orange-400 transition-all">
+          {/* Botón HIRE ME (Apuntando a contact con scroll suave) */}
+          <button 
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="hover-target bg-orange-600/30 border border-orange-500/50 px-5 py-2 rounded-full font-mono font-bold text-xs uppercase text-white shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:bg-orange-500/60 hover:shadow-[0_0_25px_rgba(249,115,22,0.6)] hover:border-orange-400 transition-all"
+          >
             HIRE ME
           </button>
           

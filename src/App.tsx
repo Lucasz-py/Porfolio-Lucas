@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import WhoAmI from './components/WhoAmI';
 import TechStack from './components/TechStack';
 import SelectedWorks from './components/SelectedWorks';
+import Footer from './components/Footer'; // <-- Importamos el nuevo Footer
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
         <TechStack />
         <SelectedWorks />
       </main>
+
+      {/* Agregamos el Footer al final de la página */}
+      <Footer />
     </div>
   );
 }
