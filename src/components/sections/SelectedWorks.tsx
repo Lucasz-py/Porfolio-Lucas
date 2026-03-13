@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { FiExternalLink } from 'react-icons/fi';
-import { useAnimation } from '../context/AnimationContext';
+import { useAnimation } from '../../context/AnimationContext';
 
-import web1 from '../assets/web1.webp';
-import web2 from '../assets/web2.webp';
-import web3 from '../assets/web3.webp';
+import web1 from '../../assets/web1.webp';
+import web2 from '../../assets/web2.webp';
+import web3 from '../../assets/web3.webp';
 
 interface ColorTheme { text: string; baseBorder: string; baseShadow: string; hoverBorder: string; hoverShadow: string; glowText: string; radialGlow: string; buttonBg: string; buttonHover: string; baseRing: string; borderSpinner: string; }
 
@@ -23,9 +23,10 @@ const projects: Project[] = [
   { id: '03', title: 'Play GBA Games', category: 'WEB EMULATOR', description: 'Plataforma interactiva que permite emular y jugar juegos clásicos de Game Boy Advance directamente desde el navegador web. Optimizada para ofrecer un alto rendimiento sin latencia utilizando tecnologías modernas.', techStack: ['React', 'TypeScript', 'Vite', 'WebAssembly'], image: web3, color: 'blue', liveUrl: 'https://playgbagames.vercel.app/' }
 ];
 
+const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const containerVariants: Variants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.3 } } };
-const projectVariants: Variants = { hidden: { opacity: 0, y: 60, scale: 0.95 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, type: "spring", bounce: 0.4 } } };
-const textVariants: Variants = { hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5 } } };
+const projectVariants: Variants = { hidden: { opacity: 0, y: 60, scale: 0.95 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: smoothEase } } };
+const textVariants: Variants = { hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } } };
 
 const ProjectCard = React.memo(({ project, index, isAnimated }: { project: Project, index: number, isAnimated: boolean }) => {
   const theme = colors[project.color];
@@ -34,9 +35,9 @@ const ProjectCard = React.memo(({ project, index, isAnimated }: { project: Proje
   const wrapperProps = project.liveUrl ? { href: project.liveUrl, target: "_blank", rel: "noreferrer" } : {};
 
   return (
-    <motion.div variants={projectVariants} className={`group relative flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 lg:gap-12 items-center`}>
+    <motion.div variants={projectVariants} className={`group relative flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 lg:gap-12 items-center will-change-transform`}>
       <div className="w-full lg:w-3/5 relative z-10">
-        <div className={`relative p-[2px] rounded-2xl overflow-hidden ${theme.baseShadow} ${theme.hoverShadow} transition-shadow duration-500 aspect-[16/10] md:aspect-[16/9] bg-black`}>
+        <div className={`relative p-[2px] rounded-2xl overflow-hidden ${theme.baseShadow} ${theme.hoverShadow} transition duration-500 ease-out aspect-[16/10] md:aspect-[16/9] bg-black`}>
           <div className={`absolute inset-0 ${theme.baseRing}`}></div>
           {isAnimated && (
             <div className={`absolute top-1/2 left-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite] blur-xl opacity-80 ${theme.borderSpinner}`}></div>
@@ -44,11 +45,11 @@ const ProjectCard = React.memo(({ project, index, isAnimated }: { project: Proje
           <div className={`absolute top-1/2 left-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2 ${isAnimated ? 'animate-[spin_4s_linear_infinite]' : ''} ${theme.borderSpinner}`}></div>
           
           <ImageWrapper {...wrapperProps} className={`absolute inset-[2px] rounded-[14px] overflow-hidden bg-black z-10 ${project.liveUrl ? 'cursor-pointer' : ''}`}>
-            <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"></div>
-            <div className="absolute inset-0 z-20 transition-opacity duration-500 pointer-events-none opacity-100" style={{ background: `radial-gradient(circle at center, ${theme.radialGlow} 0%, transparent 80%)` }}></div>
-            <img src={project.image} alt={project.title} loading="lazy" className={`w-full h-full object-cover object-top ${isAnimated ? 'transform group-hover:scale-105 transition-transform duration-700 ease-out' : ''}`} />
+            <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-500 ease-out pointer-events-none"></div>
+            <div className="absolute inset-0 z-20 transition-opacity duration-500 ease-out pointer-events-none opacity-100" style={{ background: `radial-gradient(circle at center, ${theme.radialGlow} 0%, transparent 80%)` }}></div>
+            <img src={project.image} alt={project.title} loading="lazy" className={`w-full h-full object-cover object-top will-change-transform ${isAnimated ? 'transform group-hover:scale-105 transition-transform duration-700 ease-[0.22,1,0.36,1]' : ''}`} />
             {isAnimated && (
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/80 to-transparent -translate-x-full group-hover:animate-[scan_2s_ease-in-out_infinite] opacity-0 group-hover:opacity-100 z-30"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/80 to-transparent -translate-x-full group-hover:animate-[scan_2s_ease-in-out_infinite] opacity-0 group-hover:opacity-100 z-30 transition-opacity duration-300"></div>
             )}
           </ImageWrapper>
         </div>
@@ -66,7 +67,7 @@ const ProjectCard = React.memo(({ project, index, isAnimated }: { project: Proje
           {project.techStack.map((tech, i) => <li key={i} className="font-mono text-xs text-gray-300 bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">{tech}</li>)}
         </motion.ul>
         <motion.div variants={textVariants} className="flex items-center gap-4">
-          {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 border ${theme.buttonBg} ${theme.buttonHover}`}>Live Demo <FiExternalLink className="w-4 h-4" /></a>}
+          {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold text-sm transition duration-300 ease-out border ${theme.buttonBg} ${theme.buttonHover}`}>Live Demo <FiExternalLink className="w-4 h-4" /></a>}
         </motion.div>
       </div>
     </motion.div>
@@ -76,6 +77,7 @@ ProjectCard.displayName = 'ProjectCard';
 
 export default function SelectedWorks() {
   const { animationsEnabled } = useAnimation(); 
+  const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
   return (
     <section id="work" className="relative bg-black text-white pt-24 pb-16 overflow-hidden">
@@ -83,10 +85,10 @@ export default function SelectedWorks() {
         <div className="absolute left-1/2 -translate-x-1/2 top-0 w-1/2 md:w-1/3 h-[1px] bg-gradient-to-r from-transparent via-blue-500/80 to-transparent shadow-[0_0_15px_rgba(59,130,246,0.8)]"></div>
       </div>
 
-      <div className={`absolute top-[5%] left-[-5%] w-[600px] h-[600px] bg-blue-600/30 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 ${animationsEnabled ? 'animate-ambient-glow' : 'opacity-20'}`} />
-      <div className={`absolute bottom-[10%] right-[-5%] w-[700px] h-[700px] bg-purple-600/30 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 ${animationsEnabled ? 'animate-ambient-glow-delayed' : 'opacity-20'}`} />
-      <div className={`absolute top-[30%] left-[20%] w-[500px] h-[500px] bg-orange-600/20 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 ${animationsEnabled ? 'animate-ambient-glow-slow' : 'opacity-20'}`} />
-      <div className={`absolute bottom-[40%] left-[60%] w-[400px] h-[400px] bg-blue-500/20 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 ${animationsEnabled ? 'animate-ambient-glow' : 'opacity-20'}`} />
+      <div className={`absolute top-[5%] left-[-5%] w-[600px] h-[600px] bg-blue-600/30 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 transition-opacity duration-1000 ease-in-out ${animationsEnabled ? 'animate-ambient-glow' : 'opacity-20'}`} />
+      <div className={`absolute bottom-[10%] right-[-5%] w-[700px] h-[700px] bg-purple-600/30 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 transition-opacity duration-1000 ease-in-out ${animationsEnabled ? 'animate-ambient-glow-delayed' : 'opacity-20'}`} />
+      <div className={`absolute top-[30%] left-[20%] w-[500px] h-[500px] bg-orange-600/20 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 transition-opacity duration-1000 ease-in-out ${animationsEnabled ? 'animate-ambient-glow-slow' : 'opacity-20'}`} />
+      <div className={`absolute bottom-[40%] left-[60%] w-[400px] h-[400px] bg-blue-500/20 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 transition-opacity duration-1000 ease-in-out ${animationsEnabled ? 'animate-ambient-glow' : 'opacity-20'}`} />
       
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
       
@@ -98,16 +100,16 @@ export default function SelectedWorks() {
       <motion.div animate={animationsEnabled ? { y: [0, 20, 0], x: [0, 15, 0], opacity: [0.1, 0.4, 0.1] } : { y: 0, x: 0, opacity: 0.2 }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2.5 }} className="absolute bottom-[10%] left-[20%] text-blue-400 font-mono text-xl font-bold pointer-events-none select-none z-0">{'>_'}</motion.div>
       <motion.div animate={animationsEnabled ? { y: [0, -35, 0], opacity: [0.1, 0.8, 0.1] } : { y: 0, opacity: 0.4 }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }} className="absolute top-[40%] right-[5%] text-white/30 font-mono text-sm font-bold pointer-events-none select-none z-0">{'>_'}</motion.div>
 
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-20">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6 }} className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-6 mb-24 pointer-events-none relative">
-          <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.3 }} className="absolute bottom-[-1px] left-0 w-1/3 h-[1px] bg-gradient-to-r from-purple-500 via-blue-500 to-transparent origin-left"></motion.div>
+      {/* KEY DINÁMICO: Reinicia animaciones del contenido al cambiar de modo */}
+      <div key={`works-content-${animationsEnabled}`} className="max-w-7xl mx-auto px-6 w-full relative z-20">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, ease: smoothEase }} className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-6 mb-24 pointer-events-none relative will-change-transform">
+          <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.3, ease: smoothEase }} className="absolute bottom-[-1px] left-0 w-1/3 h-[1px] bg-gradient-to-r from-purple-500 via-blue-500 to-transparent origin-left"></motion.div>
           <div>
             <span className="text-purple-400 font-mono text-xs font-bold tracking-[0.2em] uppercase mb-3 block drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">/ Mis Proyectos</span>
-            {/* OPTIMIZACIÓN: text-4xl en vez de 5xl en celulares y break-words */}
             <h2 className="text-4xl sm:text-5xl md:text-7xl font-extralight tracking-tighter drop-shadow-lg break-words">SELECTED_<span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-orange-400">WORKS</span></h2>
           </div>
           <span className="font-mono text-xs text-gray-400 hidden md:flex items-center gap-2 bg-black/40 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
-            <span className="relative flex h-2 w-2"><span className={`absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75 ${animationsEnabled ? 'animate-ping' : 'opacity-0'}`}></span><span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,1)]"></span></span>
+            <span className="relative flex h-2 w-2"><span className={`absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75 transition-opacity duration-500 ${animationsEnabled ? 'animate-ping' : 'opacity-0'}`}></span><span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,1)]"></span></span>
             PRODUCTION_READY
           </span>
         </motion.div>

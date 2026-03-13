@@ -1,11 +1,12 @@
-import CustomCursor from './components/CustomCursor';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import WhoAmI from './components/WhoAmI';
-import TechStack from './components/TechStack';
-import SelectedWorks from './components/SelectedWorks';
-import Footer from './components/Footer';
-import { AnimationProvider } from './context/AnimationContext'; // <-- Importamos el Contexto
+import CustomCursor from './components/ui/CustomCursor';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+import Hero from './components/sections/Hero';
+import WhoAmI from './components/sections/WhoAmI';
+import TechStack from './components/sections/TechStack';
+import SelectedWorks from './components/sections/SelectedWorks';
+import { AnimationProvider } from './context/AnimationContext';
+
 
 function App() {
   return (
