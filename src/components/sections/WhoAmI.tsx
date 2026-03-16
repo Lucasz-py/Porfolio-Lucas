@@ -5,6 +5,9 @@ import ProfileCard from '../ui/ProfileCard';
 import { useAnimation } from '../../context/AnimationContext';
 import { useLanguage } from '../../context/LanguageContext';
 
+// Importar el nuevo componente visual
+import { ThinkingOrb } from '../ui/ThinkingOrb';
+
 import personImg from '../../assets/person.webp';
 import grainImg from '../../assets/grain.webp';
 
@@ -27,27 +30,12 @@ const WhoAmI: React.FC = () => {
       <div className="absolute top-0 left-0 w-full h-16 bg-black/60 backdrop-blur-2xl border-y border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.8)] overflow-hidden flex items-center z-30 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"></div>
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
-        
-        <motion.div 
-          animate={animationsEnabled ? { x: ["0%", "-50%"] } : { x: 0 }} 
-          transition={{ repeat: Infinity, ease: "linear", duration: 45 }} 
-          className="flex whitespace-nowrap font-mono text-[13px] tracking-[0.3em] font-bold items-center will-change-transform"
-        >
-          <span className="flex items-center text-gray-500">
-             ✦ FULL STACK ✦ FRONTEND ✦ BACKEND ✦ UI/UX DESIGN ✦ WEBGL ✦
-             <span className="mx-6 px-4 py-1.5 rounded-full border border-orange-500/40 text-orange-400 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.2)]">CREATIVE DEVELOPER</span>
-             ✦ REACT ✦ TYPESCRIPT ✦ NODE.JS ✦ TAILWIND ✦
-             <span className="mx-6 px-4 py-1.5 rounded-full border border-blue-500/40 text-blue-400 bg-blue-500/10 shadow-[0_0_15px_rgba(59,130,246,0.2)]">PROBLEM SOLVER</span>
-          </span>
-          <span className="flex items-center text-gray-500">
-             ✦ FULL STACK ✦ FRONTEND ✦ BACKEND ✦ UI/UX DESIGN ✦ WEBGL ✦
-             <span className="mx-6 px-4 py-1.5 rounded-full border border-orange-500/40 text-orange-400 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.2)]">CREATIVE DEVELOPER</span>
-             ✦ REACT ✦ TYPESCRIPT ✦ NODE.JS ✦ TAILWIND ✦
-             <span className="mx-6 px-4 py-1.5 rounded-full border border-blue-500/40 text-blue-400 bg-blue-500/10 shadow-[0_0_15px_rgba(59,130,246,0.2)]">PROBLEM SOLVER</span>
-          </span>
+        <motion.div animate={animationsEnabled ? { x: ["0%", "-50%"] } : { x: 0 }} transition={{ repeat: Infinity, ease: "linear", duration: 45 }} className="flex whitespace-nowrap font-mono text-[13px] tracking-[0.3em] font-bold items-center will-change-transform">
+          <span className="flex items-center text-gray-500"> ✦ FULL STACK ✦ FRONTEND ✦ BACKEND ✦ UI/UX DESIGN ✦ WEBGL ✦ <span className="mx-6 px-4 py-1.5 rounded-full border border-orange-500/40 text-orange-400 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.2)]">CREATIVE DEVELOPER</span> ✦ REACT ✦ TYPESCRIPT ✦ NODE.JS ✦ TAILWIND ✦ <span className="mx-6 px-4 py-1.5 rounded-full border border-blue-500/40 text-blue-400 bg-blue-500/10 shadow-[0_0_15px_rgba(59,130,246,0.2)]">PROBLEM SOLVER</span></span>
+          <span className="flex items-center text-gray-500"> ✦ FULL STACK ✦ FRONTEND ✦ BACKEND ✦ UI/UX DESIGN ✦ WEBGL ✦ <span className="mx-6 px-4 py-1.5 rounded-full border border-orange-500/40 text-orange-400 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.2)]">CREATIVE DEVELOPER</span> ✦ REACT ✦ TYPESCRIPT ✦ NODE.JS ✦ TAILWIND ✦ <span className="mx-6 px-4 py-1.5 rounded-full border border-blue-500/40 text-blue-400 bg-blue-500/10 shadow-[0_0_15px_rgba(59,130,246,0.2)]">PROBLEM SOLVER</span></span>
         </motion.div>
       </div>
-
+      
       <div className={`absolute top-[5%] -left-[10%] w-[400px] h-[400px] md:w-[600px] md:h-[600px] bg-blue-600/30 rounded-full mix-blend-screen filter blur-[130px] pointer-events-none z-0 transition-opacity duration-1000 ease-in-out ${animationsEnabled ? 'animate-ambient-glow' : 'opacity-20'}`} />
       <div className={`absolute bottom-[5%] -right-[10%] w-[500px] h-[500px] md:w-[700px] md:h-[700px] bg-orange-600/20 rounded-full mix-blend-screen filter blur-[140px] pointer-events-none z-0 transition-opacity duration-1000 ease-in-out ${animationsEnabled ? 'animate-ambient-glow-delayed' : 'opacity-20'}`} />
       <div className={`absolute -bottom-[20%] left-[30%] w-[600px] h-[400px] bg-purple-700/20 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none z-0 transition-opacity duration-1000 ease-in-out ${animationsEnabled ? 'animate-ambient-glow-slow' : 'opacity-20'}`} />
@@ -63,25 +51,38 @@ const WhoAmI: React.FC = () => {
       <div key={`whoami-content-${animationsEnabled}-${language}`} className="container mx-auto px-6 relative z-20 w-full max-w-7xl">
         <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20 w-full">
           
+          {/* COLUMNA IZQUIERDA (Tarjeta de Perfil con el Orb Asimétrico detrás) */}
           <motion.div
             initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.8, ease: smoothEase }}
-            className="w-full lg:w-1/2 flex justify-center items-center mt-10 md:mt-0 will-change-transform"
+            className="w-full lg:w-1/2 flex justify-center items-center mt-10 md:mt-0 will-change-transform relative"
           >
-            <div className="w-full flex justify-center items-center max-w-[360px] md:max-w-[400px] hover-target">
-              <ProfileCard
-                avatarUrl={personImg} grainUrl={grainImg} name="Escobar Lucas"
-                title={t("Lic. En Sistemas", "B.S. in Systems Engineering")} handle="Lucasz" status={t("Disponible", "Available for work")}
-                contactText={t("Contacto", "Contact")} showUserInfo={true} enableTilt={animationsEnabled} 
-                enableMobileTilt={false} 
-                mobileTiltSensitivity={5} behindGlowEnabled={true} behindGlowColor="rgba(125, 190, 255, 0.67)"
-                behindGlowSize="50%" onContactClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              />
+            <div className="relative w-full flex justify-center items-center max-w-[400px] lg:max-w-full group">
+              
+              {/* COMPONENTE THINKINGORB AJUSTADO A 700px */}
+              <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[75%] w-[700px] h-[700px] z-0 flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity duration-500 ease-out pointer-events-none origin-center transform scale-90 lg:scale-100">
+                <ThinkingOrb />
+              </div>
+
+              {/* LA TARJETA DE PERFIL */}
+              <div className="w-full flex justify-center items-center max-w-[360px] md:max-w-[400px] hover-target relative z-10 will-change-transform">
+                <ProfileCard
+                  avatarUrl={personImg} grainUrl={grainImg} name="Escobar Lucas"
+                  title={t("Lic. En Sistemas", "B.S. in Systems Engineering")} handle="Lucasz" status={t("Available for work", "Available for work")}
+                  contactText={t("Contacto", "Contact")} showUserInfo={true} enableTilt={animationsEnabled} 
+                  enableMobileTilt={false} 
+                  mobileTiltSensitivity={5} behindGlowEnabled={false} 
+                  behindGlowColor="rgba(125, 190, 255, 0.67)"
+                  behindGlowSize="50%" onContactClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                />
+              </div>
+
             </div>
           </motion.div>
 
+          {/* COLUMNA DERECHA (Textos de presentación) */}
           <motion.div
             initial={{ opacity: 0, x: 80 }}
             whileInView={{ opacity: 1, x: 0 }}
