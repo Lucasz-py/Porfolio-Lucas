@@ -10,48 +10,14 @@
 
 @layer base {
   body {
-    background-color: var(--color-bgLight);
-    color: var(--color-neoBlack);
-    
-    background-image: 
-      linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-      linear-gradient(to bottom, #e5e7eb 1px, transparent 1px),
-      radial-gradient(#d1d5db 1px, transparent 1px);
-    background-size: 100px 100px, 100px 100px, 20px 20px;
-    background-position: center center;
-    
-    cursor: none; 
+    background-color: #000000;
+    color: white;
     scroll-behavior: smooth;
-  }
-
-  .hover-target {
-    cursor: none;
-  }
-
-  * {
-    cursor: none !important;
+    /* Cursor restaurado por defecto */
   }
 
   @keyframes scan {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
-  }
-
-  /* Animación optimizada por hardware para los orbes de luz */
-  @keyframes ambient-glow {
-    0%, 100% { opacity: 0.15; }
-    50% { opacity: 0.4; }
-  }
-  .animate-ambient-glow {
-    animation: ambient-glow 8s ease-in-out infinite;
-    will-change: opacity;
-  }
-  .animate-ambient-glow-delayed {
-    animation: ambient-glow 10s ease-in-out infinite 2s;
-    will-change: opacity;
-  }
-  .animate-ambient-glow-slow {
-    animation: ambient-glow 12s ease-in-out infinite 4s;
-    will-change: opacity;
   }
 }

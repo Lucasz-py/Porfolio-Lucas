@@ -1,4 +1,3 @@
-import CustomCursor from './components/ui/CustomCursor';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Hero from './components/sections/Hero';
@@ -15,7 +14,6 @@ function App() {
     <AnimationProvider>
       <LanguageProvider>
         <div className="relative min-h-screen bg-black">
-          <CustomCursor />
           
           <Header />
 

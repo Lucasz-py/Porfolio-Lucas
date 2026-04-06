@@ -1,9 +1,54 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { FiMenu, FiX } from 'react-icons/fi';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const { contextSafe } = useGSAP();
+
+  // Animación inicial del Navbar al cargar
+  useGSAP(() => {
+    gsap.from(navRef.current, { y: -100, opacity: 0, duration: 0.8, ease: "power3.out" });
+  }, []);
+
+  // Animación de entrada del menú móvil
+  useGSAP(() => {
+    if (isMobileMenuOpen && mobileMenuRef.current) {
+      gsap.fromTo(mobileMenuRef.current,
+        { opacity: 0, y: -20, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }
+      );
+    }
+  }, [isMobileMenuOpen]);
+
+  // CORRECCIÓN: Envolvemos la ejecución en contextSafe internamente
+  const closeMenuWithAnimation = (callback?: () => void) => {
+    contextSafe(() => {
+      if (mobileMenuRef.current) {
+        gsap.to(mobileMenuRef.current, {
+          opacity: 0, y: -10, scale: 0.95, duration: 0.3, ease: "power3.in",
+          onComplete: () => {
+            setIsMobileMenuOpen(false);
+            if (callback) callback();
+          }
+        });
+      } else {
+        setIsMobileMenuOpen(false);
+        if (callback) callback();
+      }
+    })(); // <-- Se ejecuta inmediatamente la función segura devuelta
+  };
+
+  const toggleMobileMenu = () => {
+    if (isMobileMenuOpen) {
+      closeMenuWithAnimation();
+    } else {
+      setIsMobileMenuOpen(true);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsMobileMenuOpen(false);
@@ -12,20 +57,20 @@ export default function Header() {
   }, []);
 
   const scrollToSection = (id: string) => {
-    setIsMobileMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    closeMenuWithAnimation(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    });
   };
 
   const scrollToTop = () => {
-    setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeMenuWithAnimation(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   };
 
   return (
-    <motion.nav 
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+    <nav 
+      ref={navRef}
       className="fixed top-0 w-full z-50 p-4 md:p-6 flex justify-center items-start pointer-events-none will-change-transform"
     >
       <div className="w-full max-w-7xl flex justify-between items-start relative">
@@ -49,31 +94,26 @@ export default function Header() {
         </div>
 
         <div className="md:hidden pointer-events-auto relative z-50">
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="px-4 py-3 bg-black/40 border border-white/10 rounded-full backdrop-blur-xl text-white shadow-[0_8px_32px_rgba(0,0,0,0.8)] hover:bg-black/60 transition duration-300 ease-out">
+          <button onClick={toggleMobileMenu} className="px-4 py-3 bg-black/40 border border-white/10 rounded-full backdrop-blur-xl text-white shadow-[0_8px_32px_rgba(0,0,0,0.8)] hover:bg-black/60 transition duration-300 ease-out">
             {isMobileMenuOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
           </button>
         </div>
 
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute top-16 right-0 mt-2 w-48 flex flex-col p-4 gap-4 bg-black/80 border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl pointer-events-auto origin-top-right z-40 will-change-transform"
-            >
-              <button onClick={() => scrollToSection('about')} className="text-left font-mono font-bold text-xs uppercase text-gray-300 hover:text-white py-2 transition-colors duration-300">/ ABOUT</button>
-              <button onClick={() => scrollToSection('skills')} className="text-left font-mono font-bold text-xs uppercase text-gray-300 hover:text-white py-2 transition-colors duration-300">/ SKILLS</button>
-              <button onClick={() => scrollToSection('work')} className="text-left font-mono font-bold text-xs uppercase text-gray-300 hover:text-white py-2 border-b border-white/10 pb-4 transition-colors duration-300">/ WORK</button>
-              <button onClick={() => scrollToSection('contact')} className="bg-orange-600/30 border border-orange-500/50 py-3 rounded-full font-mono font-bold text-xs uppercase text-white shadow-[0_0_15px_rgba(249,115,22,0.3)] w-full text-center transition duration-300 ease-out">
-                HIRE ME
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {isMobileMenuOpen && (
+          <div 
+            ref={mobileMenuRef}
+            className="absolute top-16 right-0 mt-2 w-48 flex flex-col p-4 gap-4 bg-black/80 border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl pointer-events-auto origin-top-right z-40 will-change-transform"
+          >
+            <button onClick={() => scrollToSection('about')} className="text-left font-mono font-bold text-xs uppercase text-gray-300 hover:text-white py-2 transition-colors duration-300">/ ABOUT</button>
+            <button onClick={() => scrollToSection('skills')} className="text-left font-mono font-bold text-xs uppercase text-gray-300 hover:text-white py-2 transition-colors duration-300">/ SKILLS</button>
+            <button onClick={() => scrollToSection('work')} className="text-left font-mono font-bold text-xs uppercase text-gray-300 hover:text-white py-2 border-b border-white/10 pb-4 transition-colors duration-300">/ WORK</button>
+            <button onClick={() => scrollToSection('contact')} className="bg-orange-600/30 border border-orange-500/50 py-3 rounded-full font-mono font-bold text-xs uppercase text-white shadow-[0_0_15px_rgba(249,115,22,0.3)] w-full text-center transition duration-300 ease-out">
+              HIRE ME
+            </button>
+          </div>
+        )}
 
       </div>
-    </motion.nav>
+    </nav>
   );
 }
