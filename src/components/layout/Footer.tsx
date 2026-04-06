@@ -56,9 +56,7 @@ export default function Footer() {
     <footer ref={containerRef} id="contact" className="relative bg-black text-white pt-24 pb-10 overflow-hidden">
       
       {/* ELIMINADAS LAS LUCES AMBIENTALES Y LA MALLA DE PUNTOS */}
-      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent z-30">
-        <div className="absolute left-1/2 -translate-x-1/2 top-0 w-3/4 md:w-1/1 h-[4px] bg-gradient-to-r from-transparent via-orange-500/80 to-transparent shadow-[0_0_20px_rgba(249,115,22,1)]"></div>
-      </div>
+  
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
