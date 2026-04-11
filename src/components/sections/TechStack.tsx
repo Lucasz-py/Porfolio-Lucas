@@ -3,7 +3,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import LogoLoop from '../ui/LogoLoop';
-import { useAnimation } from '../../context/AnimationContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { 
   SiDocker, SiSupabase, SiReact, SiNextdotjs, SiTypescript, 
@@ -59,7 +58,6 @@ const TechCard = React.memo(({ tech, colorTheme }: TechCardProps) => (
 TechCard.displayName = 'TechCard';
 
 export default function TechStack() {
-  const { animationsEnabled } = useAnimation(); 
   const { t } = useLanguage();
   const containerRef = useRef<HTMLElement>(null);
 
@@ -77,24 +75,21 @@ export default function TechStack() {
   }, { scope: containerRef });
 
   return (
-    // CAMBIO DE BACKGROUND: bg-black -> bg-[#050505]
     <section ref={containerRef} id="skills" className="relative bg-[#00000] text-white pb-32 overflow-hidden min-h-screen flex flex-col justify-start">
-      
-      {/* ELIMINADAS LAS LUCES Y LA GRILLA DE PUNTOS DE FONDO */}
       
       <div className="absolute top-0 left-0 w-full z-30 bg-black/40 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.5)] py-4">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-orange-500/50 to-transparent shadow-[0_0_15px_rgba(249,115,22,0.8)]"></div>
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
         <LogoLoop 
           logos={techLogos} 
-          speed={animationsEnabled ? 40 : 0} 
+          speed={40} 
           direction="left" 
           logoHeight={50} 
           gap={60} 
           hoverSpeed={0} 
-          scaleOnHover={animationsEnabled} 
+          scaleOnHover={true} 
           fadeOut={true} 
-          fadeOutColor="#050505" // Ajustado al nuevo color de fondo
+          fadeOutColor="#050505"
           ariaLabel="Technology partners" 
           className="relative z-10 pointer-events-auto" 
         />
@@ -110,7 +105,7 @@ export default function TechStack() {
             </h2>
           </div>
           <span className="font-mono text-xs text-gray-400 hidden md:flex items-center gap-2 bg-black/40 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
-            <span className="relative flex h-2 w-2"><span className={`absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75 transition-opacity duration-500 ${animationsEnabled ? 'animate-ping' : 'opacity-0'}`}></span><span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,1)]"></span></span>
+            <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75 transition-opacity duration-500"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,1)]"></span></span>
             {t("SYSTEM_OPTIMIZED", "SYSTEM_OPTIMIZED")}
           </span>
         </div>

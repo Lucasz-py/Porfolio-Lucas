@@ -4,14 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { FiGithub, FiLinkedin, FiMail, FiInstagram } from 'react-icons/fi';
 import { SiWhatsapp } from 'react-icons/si';
-import { useAnimation } from '../../context/AnimationContext';
 import { useLanguage } from '../../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const { animationsEnabled } = useAnimation(); 
   const { t } = useLanguage();
   const containerRef = useRef<HTMLElement>(null);
 
@@ -31,7 +29,6 @@ export default function Footer() {
     textTl.from(".footer-subtitle", { opacity: 0, scale: 0.8, duration: 0.6, ease: "power3.out" })
           .from(".footer-title", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" }, "-=0.5")
           .from(".footer-desc", { opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.6")
-          // SOLUCIÓN: Animamos el wrapper y limpiamos props
           .from(".footer-btn-wrapper", { opacity: 0, y: 20, duration: 0.6, ease: "power3.out", clearProps: "all" }, "-=0.5");
 
     gsap.from(".footer-line-base", {
@@ -51,13 +48,8 @@ export default function Footer() {
   }, { scope: containerRef });
 
   return (
-    // Color de fondo negro sólido para máximo rendimiento y contraste
-
     <footer ref={containerRef} id="contact" className="relative bg-black text-white pt-24 pb-10 overflow-hidden">
       
-      {/* ELIMINADAS LAS LUCES AMBIENTALES Y LA MALLA DE PUNTOS */}
-  
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         <div className="footer-content relative z-50 flex flex-col items-center justify-center text-center mb-24 pointer-events-auto">
@@ -74,7 +66,6 @@ export default function Footer() {
             {t("Ya sea que tengas una idea en mente o necesites un desarrollador Full Stack para tu equipo, mi bandeja de entrada siempre está abierta.", "Whether you have an idea in mind or need a Full Stack developer for your team, my inbox is always open.")}
           </p>
           
-          {/* WRAPPER PARA GSAP */}
           <div className="footer-btn-wrapper will-change-transform mt-2">
             <a href="https://wa.me/5493757500969" target="_blank" rel="noreferrer" className="footer-btn hover-target group relative px-10 py-5 bg-orange-600/20 border border-orange-500/50 rounded-full font-semibold tracking-wide hover:bg-orange-500/30 hover:border-orange-400 transition duration-300 ease-out overflow-hidden shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)] flex items-center gap-3 inline-flex">
               <span className="relative z-10 flex items-center gap-3 text-orange-100 group-hover:text-white transition-colors duration-300">
@@ -108,7 +99,7 @@ export default function Footer() {
 
           <div className="bottom-item flex-1 flex justify-center md:justify-end items-center w-full">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 backdrop-blur-md transition duration-300 ease-out hover:bg-white/10 hover:border-white/20 cursor-default">
-              <span className="relative flex h-2 w-2"><span className={`absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 transition-opacity duration-500 ${animationsEnabled ? 'animate-ping' : 'opacity-0'}`}></span><span className="relative inline-flex rounded-full h-2 w-2 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,1)]"></span></span>
+              <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 transition-opacity duration-500"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,1)]"></span></span>
               <span className="font-mono text-[10px] text-gray-300 uppercase tracking-widest">{t("SISTEMA EN LÍNEA", "SYSTEM ONLINE")}</span>
             </div>
           </div>

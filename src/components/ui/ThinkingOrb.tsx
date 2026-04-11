@@ -1,5 +1,4 @@
 import { useRef, useEffect, memo } from 'react';
-import { useAnimation } from '../../context/AnimationContext';
 
 // Configuración de la animación optimizada
 const PARTICLE_COUNT = 400; 
@@ -16,14 +15,11 @@ interface Particle { x: number; y: number; z: number; originalX: number; origina
 export const ThinkingOrb = memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
-  // SOLUCIÓN: Agregamos (0) como valor inicial
   const animationFrameId = useRef<number>(0); 
   const rotationAngleRef = useRef(0);
   const pulseTimeRef = useRef(0);
 
-  const { animationsEnabled } = useAnimation();
-
-  // Inicialización de partículas en una esfera (Solo se ejecuta una vez)
+  // Inicialización de partículas en una esfera
   useEffect(() => {
     if (particlesRef.current.length > 0) return; 
 
@@ -49,13 +45,12 @@ export const ThinkingOrb = memo(() => {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
-    // Dimensiones del canvas ajustadas a 700x700
     canvas.width = 700 * dpr;
     canvas.height = 700 * dpr;
     canvas.style.width = '700px';
     canvas.style.height = '700px';
     ctx.scale(dpr, dpr);
-    ctx.translate(350, 350); // Centrar el origen (700/2)
+    ctx.translate(350, 350); 
 
     let lastTime = performance.now();
 
@@ -65,17 +60,13 @@ export const ThinkingOrb = memo(() => {
 
       ctx.clearRect(-350, -350, 700, 700);
 
-      if (animationsEnabled) {
-        rotationAngleRef.current += ROTATION_SPEED * (delta / 16.7);
-        pulseTimeRef.current += 0.05 * (delta / 16.7);
-      }
+      rotationAngleRef.current += ROTATION_SPEED * (delta / 16.7);
+      pulseTimeRef.current += 0.05 * (delta / 16.7);
 
       const angle = rotationAngleRef.current;
       const pulseFactor = pulseTimeRef.current;
       
-      if (animationsEnabled) {
-        particlesRef.current.sort((a, b) => b.z - a.z);
-      }
+      particlesRef.current.sort((a, b) => b.z - a.z);
 
       for (let i = 0; i < particlesRef.current.length; i++) {
         const p = particlesRef.current[i];
@@ -102,11 +93,8 @@ export const ThinkingOrb = memo(() => {
 
         const depthOpacity = Math.max(0.1, Math.min(1, (p.z + ORB_RADIUS) / (2 * ORB_RADIUS)));
         
-        let pulseBrightness = 0;
-        if (animationsEnabled) {
-          const wave = Math.sin(p.originalY * 0.05 + pulseFactor);
-          pulseBrightness = Math.pow(Math.max(0, wave), 8) * 0.8;
-        }
+        const wave = Math.sin(p.originalY * 0.05 + pulseFactor);
+        const pulseBrightness = Math.pow(Math.max(0, wave), 8) * 0.8;
 
         const finalOpacity = depthOpacity + pulseBrightness;
         const colorH = BASE_COLOR.h + pulseBrightness * (GLOW_COLOR.h - BASE_COLOR.h);
@@ -117,7 +105,7 @@ export const ThinkingOrb = memo(() => {
         ctx.arc(screenX, screenY, size, 0, Math.PI * 2);
         ctx.fillStyle = `hsla(${colorH}, ${BASE_COLOR.s}%, ${colorL}%, ${finalOpacity})`;
         
-        if (animationsEnabled && pulseBrightness > 0.3) {
+        if (pulseBrightness > 0.3) {
           ctx.shadowColor = `hsla(${colorH}, ${BASE_COLOR.s}%, ${colorL}%, ${pulseBrightness * 0.5})`;
           ctx.shadowBlur = pulseBrightness * 12;
         } else {
@@ -137,7 +125,7 @@ export const ThinkingOrb = memo(() => {
         window.cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [animationsEnabled]); 
+  }, []); 
 
   return (
     <div className="relative flex flex-col items-center justify-center w-[700px] h-[700px] select-none pointer-events-none origin-center transform will-change-transform">

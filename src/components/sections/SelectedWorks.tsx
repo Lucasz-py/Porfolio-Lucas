@@ -3,7 +3,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { FiExternalLink } from 'react-icons/fi';
-import { useAnimation } from '../../context/AnimationContext';
 import { useLanguage } from '../../context/LanguageContext';
 
 import web1 from '../../assets/web1.webp';
@@ -26,7 +25,7 @@ const colors: Record<'blue' | 'orange' | 'purple', ColorTheme> = {
 
 interface Project { id: string; title: string; category: string; description: string; techStack: string[]; image: string; color: 'blue' | 'orange' | 'purple'; liveUrl?: string; }
 
-const ProjectCard = React.memo(({ project, index, isAnimated }: { project: Project, index: number, isAnimated: boolean }) => {
+const ProjectCard = React.memo(({ project, index }: { project: Project, index: number }) => {
   const theme = colors[project.color];
   const isEven = index % 2 === 0;
   const ImageWrapper = project.liveUrl ? 'a' : 'div';
@@ -37,12 +36,12 @@ const ProjectCard = React.memo(({ project, index, isAnimated }: { project: Proje
       <div className="card-image-container w-full lg:w-3/5 relative z-10">
         <div className={`relative p-[2px] rounded-2xl overflow-hidden ${theme.baseShadow} ${theme.hoverShadow} transition duration-500 ease-out aspect-[16/10] md:aspect-[16/9] bg-black`}>
           <div className={`absolute inset-0 ${theme.baseRing}`}></div>
-          {isAnimated && <div className={`absolute top-1/2 left-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite] blur-xl opacity-80 ${theme.borderSpinner}`}></div>}
-          <div className={`absolute top-1/2 left-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2 ${isAnimated ? 'animate-[spin_4s_linear_infinite]' : ''} ${theme.borderSpinner}`}></div>
+          <div className={`absolute top-1/2 left-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite] blur-xl opacity-80 ${theme.borderSpinner}`}></div>
+          <div className={`absolute top-1/2 left-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite] ${theme.borderSpinner}`}></div>
           <ImageWrapper {...wrapperProps} className={`absolute inset-[2px] rounded-[14px] overflow-hidden bg-black z-10 ${project.liveUrl ? 'cursor-pointer' : ''}`}>
             <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-500 ease-out pointer-events-none"></div>
             <div className="absolute inset-0 z-20 transition-opacity duration-500 ease-out pointer-events-none opacity-100" style={{ background: `radial-gradient(circle at center, ${theme.radialGlow} 0%, transparent 80%)` }}></div>
-            <img src={project.image} alt={project.title} loading="lazy" className={`w-full h-full object-cover object-top will-change-transform ${isAnimated ? 'transform group-hover:scale-105 transition-transform duration-700 ease-out' : ''}`} />
+            <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover object-top will-change-transform transform group-hover:scale-105 transition-transform duration-700 ease-out" />
           </ImageWrapper>
         </div>
       </div>
@@ -76,7 +75,6 @@ const ProjectCard = React.memo(({ project, index, isAnimated }: { project: Proje
 ProjectCard.displayName = 'ProjectCard';
 
 export default function SelectedWorks() {
-  const { animationsEnabled } = useAnimation(); 
   const { t } = useLanguage();
   const containerRef = useRef<HTMLElement>(null);
 
@@ -116,10 +114,8 @@ export default function SelectedWorks() {
   }, { scope: containerRef }); 
 
   return (
-    // CAMBIO DE BACKGROUND: bg-[#020617] (Un tono medianoche súper elegante)
     <section ref={containerRef} id="work" className="relative bg-[#08040D] text-white pt-24 pb-16 overflow-hidden">
       
-      {/* Línea decorativa superior */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent z-30">
         <div className="absolute left-1/2 -translate-x-1/2 top-0 w-3/4 md:w-1/1 h-[1px] bg-gradient-to-r from-transparent via-blue-500/80 to-transparent shadow-[0_0_20px_rgba(59,130,246,1)]"></div>
       </div>
@@ -136,7 +132,7 @@ export default function SelectedWorks() {
           </div>
           <span className="font-mono text-xs text-gray-400 hidden md:flex items-center gap-2 bg-black/40 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
             <span className="relative flex h-2 w-2">
-              <span className={`absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75 transition-opacity duration-500 ${animationsEnabled ? 'animate-ping' : 'opacity-0'}`}></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75 transition-opacity duration-500"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,1)]"></span>
             </span>
             PRODUCTION_READY
@@ -146,13 +142,12 @@ export default function SelectedWorks() {
         <div className="flex flex-col w-full gap-24 lg:gap-32 pb-16">
           {projects.map((project, index) => (
             <div key={project.id} className="project-card-trigger w-full">
-              <ProjectCard project={project} index={index} isAnimated={animationsEnabled} />
+              <ProjectCard project={project} index={index} />
             </div>
           ))}
         </div>
       </div>
 
-      {/* NUEVA LÍNEA BRILLANTE INFERIOR SEPARADORA */}
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent z-30">
         <div className="absolute left-1/2 -translate-x-1/2 top-0 w-3/4 md:w-1/1 h-[4px] bg-gradient-to-r from-transparent via-orange-500/80 to-transparent shadow-[0_0_20px_rgba(249,115,22,1)]"></div>
       </div>
